@@ -4,6 +4,10 @@ import os
 import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
+import tensorflow as tf
+
+# Set TensorFlow logging level to suppress warnings
+tf.get_logger().setLevel('ERROR')
 
 app = Flask(__name__)
 
@@ -72,8 +76,5 @@ def predict():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    if os.environ.get("FLASK_ENV") == "development":
-        app.run(debug=True)
-    else:
-        app.run(debug=False)
-
+    port = int(os.environ.get("PORT", 5000))  # Use Render's dynamic port
+    app.run(host='0.0.0.0', port=port)
